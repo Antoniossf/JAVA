@@ -79,13 +79,40 @@ public class LivroDAO {
         return null;
     }
     
-    public void excluir(int id){
-
+    public void excluir(int id) {
+        String sql = "DELETE FROM livro WHERE idLivro = ?";
+        try {
+            PreparedStatement pst = conexao.getConexaoDB().prepareStatement(sql);
+            pst.setInt(1, id);
+            int rowsAffected = pst.executeUpdate();
+            if (rowsAffected > 0) {
+                System.out.println("Exclusão realizada com sucesso. ID: " + id);
+            } else {
+                System.out.println("Nenhum registro encontrado com ID: " + id);
+            }
+        } catch (Exception e) {
+            System.out.println("Falha na exclusão: " + e.getMessage());
+        }
     }
-    
-    public void alterar(Livro livro){
 
+    public void alterar(Livro livro) {
+        String sql = "UPDATE livro SET titulo = ?, autor = ?, ano = ? WHERE idLivro = ?";
+        try {
+            PreparedStatement pst = conexao.getConexaoDB().prepareStatement(sql);
+            pst.setString(1, livro.getTitulo());
+            pst.setString(2, livro.getAutor());
+            pst.setInt(3, livro.getAno());
+            pst.setInt(4, livro.getId());
+            int rowsAffected = pst.executeUpdate();
+            if (rowsAffected > 0) {
+                System.out.println("Alteração realizada com sucesso: " + livro);
+            } else {
+                System.out.println("Nenhum registro encontrado com ID: " + livro.getId());
+            }
+        } catch (Exception e) {
+            System.out.println("Falha na alteração: " + e.getMessage());
+        }
     }
-    
+}
 }
 
